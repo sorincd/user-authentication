@@ -13,7 +13,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class StatusResource {
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole(\"ROLE_USER\")")
+    @PreAuthorize("hasAuthority(\"USER\")")
     public String status() {
         return "Hello, " + currentUser().getUsername();
     }
