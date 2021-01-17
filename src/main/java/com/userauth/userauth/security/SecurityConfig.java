@@ -32,13 +32,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();*/
 
         http
+                .csrf().disable()
                 .authorizeRequests()
+                .antMatchers("/**").hasRole("USER")
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()
                 .and()
                 .logout()
-                .permitAll();
+                .deleteCookies("JSESSIONID").invalidateHttpSession(true)
+                .logoutSuccessUrl("/login");
     }
 
     @Override
