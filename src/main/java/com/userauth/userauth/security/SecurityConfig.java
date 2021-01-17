@@ -9,11 +9,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+import java.util.List;
 import java.util.Set;
 
 @Configuration
@@ -37,27 +36,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    @Override
-    public UserDetailsService userDetailsService() {
-        User user = User.user()
-                .withUsername("user")
-                .withPassword(passwordEncoder().encode("password"))
-                .withFirstName("John")
-                .withName("Wick")
-                .withAge(35)
-                .withAuthorities(Set.of(new SimpleGrantedAuthority("USER")))
-                .build();
-
-        User admin = User.user()
-                .withUsername("admin")
-                .withPassword(passwordEncoder().encode("password"))
-                .withFirstName("Admin")
-                .withName("Nick")
-                .withAuthorities(Set.of(new SimpleGrantedAuthority("ADMIN")))
-                .withAge(40)
-                .build();
-
-        return new InMemoryUserDetailsManager(user, admin);
+    List<User> users() {
+        return List.of(
+                User
+                        .user()
+                        .withUsername("user")
+                        .withPassword(passwordEncoder().encode("password"))
+                        .withFirstName("John")
+                        .withName("Wick")
+                        .withAge(35)
+                        .withAuthorities(Set.of(new SimpleGrantedAuthority("USER")))
+                        .build(),
+                User
+                        .user()
+                        .withUsername("admin")
+                        .withPassword(passwordEncoder().encode("password"))
+                        .withFirstName("Admin")
+                        .withName("Nick")
+                        .withAuthorities(Set.of(new SimpleGrantedAuthority("ADMIN")))
+                        .withAge(40)
+                        .build());
     }
 
     @Bean
